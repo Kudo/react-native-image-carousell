@@ -3,7 +3,6 @@ import React, {
   Text,
   Image,
   ListView,
-  ListViewDataSource,
   ScrollView,
   PropTypes,
   Dimensions,
@@ -16,7 +15,7 @@ const deviceHeight = Dimensions.get('window').height;
 
 export default class ImageCarousell extends React.Component {
   static propTypes = {
-    dataSource: PropTypes.instanceOf(ListViewDataSource).isRequired,
+    dataSource: PropTypes.instanceOf(ListView.DataSource).isRequired,
     initialIndex: PropTypes.number,
     previewImageSize: PropTypes.number,
     renderScrollComponent: PropTypes.func,
