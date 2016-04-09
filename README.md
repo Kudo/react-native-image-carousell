@@ -6,7 +6,7 @@ A component for image gallery carousell like iOS Photos app
 - Support zoom (Currently iOS only)
 - Will hide preview when zoomScale > 1
 
-![Example.gif](https://raw.githubusercontent.com/Kudo/react-native-image-carousell/master/Example/images/Example.gif)
+<img src="https://raw.githubusercontent.com/Kudo/react-native-image-carousell/master/Example/images/Example.gif" width="300" alt="Example.gif" />
 
 ## Installation
 ```
