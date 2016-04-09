@@ -1,6 +1,6 @@
 {
   "name": "react-native-image-carousell",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A component for image gallery carousell like iOS Photos app",
   "main": "ImageCarousell.js",
   "repository": {
