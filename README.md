@@ -3,8 +3,9 @@ A component for image gallery carousell like iOS Photos app
 
 ### Features
 - Has a bottom preview for near photos and will scroll responsively
-- Support zoom (Currently iOS only)
+- Support zoom
 - Will hide preview when zoomScale > 1
+- Currently iOS support only, check [#2](https://github.com/Kudo/react-native-image-carousell/issues/2)
 
 <img src="https://raw.githubusercontent.com/Kudo/react-native-image-carousell/master/Example/images/Example.gif" width="300" alt="Example.gif" />
 
