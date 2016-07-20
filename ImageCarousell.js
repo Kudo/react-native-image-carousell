@@ -1,10 +1,11 @@
-import React, {
+import React, { PropTypes, Component } from 'react';
+import {
   View,
   Text,
   Image,
   ListView,
   ScrollView,
-  PropTypes,
+  StyleSheet,
   Dimensions,
 } from 'react-native';
 
@@ -13,7 +14,7 @@ const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 
-export default class ImageCarousell extends React.Component {
+export default class ImageCarousell extends Component {
   static propTypes = {
     dataSource: PropTypes.instanceOf(ListView.DataSource).isRequired,
     initialIndex: PropTypes.number,
@@ -89,7 +90,7 @@ export default class ImageCarousell extends React.Component {
           this.props.imageStyle,
           { width: deviceWidth, height: imageHeight }
         ]}
-        source={image}
+        source={{uri:image}}
         resizeMode="contain"
       />
     );
@@ -103,7 +104,7 @@ export default class ImageCarousell extends React.Component {
           this.props.previewImageStyle,
           { width: this.props.previewImageSize, height: this.props.previewImageSize },
         ]}
-        source={image}
+        source={{uri:image}}
         resizeMode="contain"
       />
     );
@@ -163,7 +164,7 @@ export default class ImageCarousell extends React.Component {
   }
 }
 
-const styles = React.StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
   },
