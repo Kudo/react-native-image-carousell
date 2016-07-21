@@ -7,12 +7,13 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  Navigator,
 } from 'react-native';
 
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-
+const navigationBarHeight = Navigator.NavigationBar.Styles.General.TotalNavHeight;
 
 export default class ImageCarousell extends Component {
   static propTypes = {
@@ -43,6 +44,7 @@ export default class ImageCarousell extends Component {
     this._previewOffset = 0;
     this.state = {
       showPreview: true,
+      previewHeight: 80,
     };
   }
 
@@ -50,6 +52,7 @@ export default class ImageCarousell extends Component {
     const { initialIndex, previewImageSize } = this.props;
     this.refs.listView.scrollTo({x: initialIndex * deviceWidth, animated: false});
     this.refs.previewListView.scrollTo({x: (initialIndex - 2) * previewImageSize + this._bias, animated: false});
+    this.setState({previewHeight: deviceHeight - navigationBarHeight - this.props.previewImageSize})
   }
 
   handleScroll(e) {
@@ -79,7 +82,7 @@ export default class ImageCarousell extends Component {
   }
 
   renderImageView(image) {
-    let imageHeight = deviceHeight;
+    let imageHeight = deviceHeight - navigationBarHeight;
     if (this.state.showPreview) {
       imageHeight -= this.props.previewImageSize;
     }
@@ -126,7 +129,12 @@ export default class ImageCarousell extends Component {
           style={[
             styles.previewListView,
             this.props.previewContainerStyle,
-            { height: this.props.previewImageSize }
+            {
+              height: this.props.previewImageSize,
+              position: 'absolute',
+              top: this.state.previewHeight,
+              left: 0,
+            }
           ]}
           renderRow={this.renderImagePreview}
           ref="previewListView"
@@ -167,6 +175,7 @@ export default class ImageCarousell extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
+    flex: 1,
   },
   listView: {
     flex: 1,
@@ -176,6 +185,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     borderTopWidth: 1,
     borderColor: '#CCCCCC',
+    backgroundColor: '#FFFFFF',
   },
   previewImage: {
     marginLeft: 2,
