@@ -8,13 +8,11 @@ import {
   StyleSheet,
   Dimensions,
   Platform,
-  Navigator,
 } from 'react-native';
 
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-const navigationBarHeight = Navigator.NavigationBar.Styles.General.TotalNavHeight;
 
 export default class ImageCarousell extends Component {
   static propTypes = {
@@ -53,7 +51,7 @@ export default class ImageCarousell extends Component {
     const { initialIndex, previewImageSize } = this.props;
     this.refs.listView.scrollTo({x: initialIndex * deviceWidth, animated: false});
     this.refs.previewListView.scrollTo({x: (initialIndex - 2) * previewImageSize + this._bias, animated: false});
-    this.setState({previewTop: deviceHeight - navigationBarHeight - this.props.previewImageSize})
+    this.setState({previewTop: deviceHeight - this.props.previewImageSize})
   }
 
   handleScroll(e) {
@@ -85,7 +83,7 @@ export default class ImageCarousell extends Component {
   }
 
   renderImageView(image) {
-    let imageHeight = deviceHeight - navigationBarHeight;
+    let imageHeight = deviceHeight;
     if (this.state.showPreview) {
       imageHeight -= this.props.previewImageSize;
     }
@@ -96,7 +94,7 @@ export default class ImageCarousell extends Component {
           this.props.imageStyle,
           { width: deviceWidth, height: imageHeight }
         ]}
-        source={{uri:image}}
+        source={image}
         resizeMode="contain"
       />
     );
@@ -110,7 +108,7 @@ export default class ImageCarousell extends Component {
           this.props.previewImageStyle,
           { width: this.props.previewImageSize, height: this.props.previewImageSize },
         ]}
-        source={{uri:image}}
+        source={image}
         resizeMode="contain"
       />
     );
