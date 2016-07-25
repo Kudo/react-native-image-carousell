@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  Platform,
   Navigator,
 } from 'react-native';
 
@@ -44,7 +45,7 @@ export default class ImageCarousell extends Component {
     this._previewOffset = 0;
     this.state = {
       showPreview: true,
-      previewHeight: 80,
+      previewTop: 80,
     };
   }
 
@@ -52,19 +53,21 @@ export default class ImageCarousell extends Component {
     const { initialIndex, previewImageSize } = this.props;
     this.refs.listView.scrollTo({x: initialIndex * deviceWidth, animated: false});
     this.refs.previewListView.scrollTo({x: (initialIndex - 2) * previewImageSize + this._bias, animated: false});
-    this.setState({previewHeight: deviceHeight - navigationBarHeight - this.props.previewImageSize})
+    this.setState({previewTop: deviceHeight - navigationBarHeight - this.props.previewImageSize})
   }
 
   handleScroll(e) {
     const event = e.nativeEvent;
 
-    // [0] Show preview only if zoom is disabled
-    const newShowPreview = event.zoomScale <= 1;
-    if (this.state.showPreview !== newShowPreview) {
-      this.setState({ showPreview: newShowPreview });
-    }
-    if (!newShowPreview) {
-      return;
+    if (Platform.OS === 'ios') {
+      // [0] Show preview only if zoom is disabled
+      const newShowPreview = event.zoomScale <= 1;
+      if (this.state.showPreview !== newShowPreview) {
+        this.setState({ showPreview: newShowPreview });
+      }
+      if (!newShowPreview) {
+        return;
+      }
     }
 
     // [1] If preview is displayed, adjust position to current image index
@@ -132,7 +135,7 @@ export default class ImageCarousell extends Component {
             {
               height: this.props.previewImageSize,
               position: 'absolute',
-              top: this.state.previewHeight,
+              top: this.state.previewTop,
               left: 0,
             }
           ]}
