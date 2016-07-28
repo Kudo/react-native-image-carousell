@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import {
   View,
-  Text,
   Image,
   ListView,
   ScrollView,
@@ -10,9 +9,6 @@ import {
   Platform,
 } from 'react-native';
 
-
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
 
 export default class ImageCarousell extends Component {
   static propTypes = {
@@ -24,12 +20,18 @@ export default class ImageCarousell extends Component {
     previewContainerStyle: View.propTypes.style,
     imageStyle: View.propTypes.style,
     previewImageStyle: View.propTypes.style,
+    width: PropTypes.number,
+    height: PropTypes.number,
+    getImageSourceFromDataSource: PropTypes.func,
   };
 
   static defaultProps = {
     initialIndex: 0,
     previewImageSize: 80,
     renderScrollComponent: (props) => <ScrollView {...props} />,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    getImageSourceFromDataSource: (row) => row,
   };
 
   constructor(props) {
@@ -47,8 +49,14 @@ export default class ImageCarousell extends Component {
   }
 
   componentDidMount() {
-    const { initialIndex, previewImageSize } = this.props;
-    this.refs.listView.scrollTo({x: initialIndex * deviceWidth, animated: false});
+    const { initialIndex, previewImageSize, width } = this.props;
+    this.refs.listView.scrollTo({x: initialIndex * width, animated: false});
+    this.refs.previewListView.scrollTo({x: (initialIndex - 2) * previewImageSize + this._bias, animated: false});
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { initialIndex, previewImageSize, width } = this.props;
+    this.refs.listView.scrollTo({x: initialIndex * width, animated: false});
     this.refs.previewListView.scrollTo({x: (initialIndex - 2) * previewImageSize + this._bias, animated: false});
   }
 
@@ -80,33 +88,41 @@ export default class ImageCarousell extends Component {
     this._bias = e.nativeEvent.layout.width % this.props.previewImageSize / 2;
   }
 
-  renderImageView(image) {
-    let imageHeight = deviceHeight;
+  renderImageView(row) {
+    const {
+      width,
+      height,
+      imageStyle,
+      previewImageSize,
+      getImageSourceFromDataSource,
+    } = this.props;
+    let imageHeight = height;
     if (this.state.showPreview) {
-      imageHeight -= this.props.previewImageSize;
+      imageHeight -= previewImageSize;
     }
 
     return (
       <Image
         style={[
-          this.props.imageStyle,
-          { width: deviceWidth, height: imageHeight }
+          imageStyle,
+          { width, height: imageHeight }
         ]}
-        source={image}
+        source={getImageSourceFromDataSource(row)}
         resizeMode="contain"
       />
     );
   }
 
-  renderImagePreview(image) {
+  renderImagePreview(row) {
+    const { previewImageStyle, previewImageSize, getImageSourceFromDataSource } = this.props;
     return (
       <Image
         style={[
           styles.previewImage,
-          this.props.previewImageStyle,
-          { width: this.props.previewImageSize, height: this.props.previewImageSize },
+          previewImageStyle,
+          { width: previewImageSize, height: previewImageSize },
         ]}
-        source={image}
+        source={getImageSourceFromDataSource(row)}
         resizeMode="contain"
       />
     );
@@ -141,6 +157,7 @@ export default class ImageCarousell extends Component {
         horizontal: true,
         pagingEnabled: true,
         maximumZoomScale: 3.0,
+        directionalLockEnabled: true,
         showsVerticalScrollIndicator: false,
         showsHorizontalScrollIndicator: false,
         ...props,
