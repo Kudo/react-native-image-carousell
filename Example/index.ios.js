@@ -1,12 +1,14 @@
-import React, {
+import React, { Component } from 'react';
+import {
   AppRegistry,
   View,
   Text,
   ListView,
+  StyleSheet,
 } from 'react-native';
 import ImageCarousell from 'react-native-image-carousell';
 
-class Example extends React.Component {
+class Example extends Component {
   constructor(props) {
     super(props);
     const dataSource = new ListView.DataSource({
@@ -38,7 +40,7 @@ class Example extends React.Component {
   }
 }
 
-const styles = React.StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
   },

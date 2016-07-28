@@ -1,19 +1,20 @@
-import React, {
+import React, { PropTypes, Component } from 'react';
+import {
   View,
   Text,
   Image,
   ListView,
   ScrollView,
-  PropTypes,
+  StyleSheet,
   Dimensions,
+  Platform,
 } from 'react-native';
 
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-
-export default class ImageCarousell extends React.Component {
+export default class ImageCarousell extends Component {
   static propTypes = {
     dataSource: PropTypes.instanceOf(ListView.DataSource).isRequired,
     initialIndex: PropTypes.number,
@@ -42,6 +43,7 @@ export default class ImageCarousell extends React.Component {
     this._previewOffset = 0;
     this.state = {
       showPreview: true,
+      previewTop: 80,
     };
   }
 
@@ -49,18 +51,21 @@ export default class ImageCarousell extends React.Component {
     const { initialIndex, previewImageSize } = this.props;
     this.refs.listView.scrollTo({x: initialIndex * deviceWidth, animated: false});
     this.refs.previewListView.scrollTo({x: (initialIndex - 2) * previewImageSize + this._bias, animated: false});
+    this.setState({previewTop: deviceHeight - this.props.previewImageSize})
   }
 
   handleScroll(e) {
     const event = e.nativeEvent;
 
-    // [0] Show preview only if zoom is disabled
-    const newShowPreview = event.zoomScale <= 1;
-    if (this.state.showPreview !== newShowPreview) {
-      this.setState({ showPreview: newShowPreview });
-    }
-    if (!newShowPreview) {
-      return;
+    if (Platform.OS === 'ios') {
+      // [0] Show preview only if zoom is disabled
+      const newShowPreview = event.zoomScale <= 1;
+      if (this.state.showPreview !== newShowPreview) {
+        this.setState({ showPreview: newShowPreview });
+      }
+      if (!newShowPreview) {
+        return;
+      }
     }
 
     // [1] If preview is displayed, adjust position to current image index
@@ -125,7 +130,12 @@ export default class ImageCarousell extends React.Component {
           style={[
             styles.previewListView,
             this.props.previewContainerStyle,
-            { height: this.props.previewImageSize }
+            {
+              height: this.props.previewImageSize,
+              position: 'absolute',
+              top: this.state.previewTop,
+              left: 0,
+            }
           ]}
           renderRow={this.renderImagePreview}
           ref="previewListView"
@@ -163,9 +173,10 @@ export default class ImageCarousell extends React.Component {
   }
 }
 
-const styles = React.StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
+    flex: 1,
   },
   listView: {
     flex: 1,
@@ -175,6 +186,7 @@ const styles = React.StyleSheet.create({
     paddingTop: 2,
     borderTopWidth: 1,
     borderColor: '#CCCCCC',
+    backgroundColor: '#FFFFFF',
   },
   previewImage: {
     marginLeft: 2,

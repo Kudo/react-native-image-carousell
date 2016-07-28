@@ -6,8 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "^0.14.8",
-    "react-native": "^0.23.1",
-    "react-native-image-carousell": "file:../"
+	"react": "15.2.0",
+	"react-native": "0.30.0",
+	"react-native-image-carousell": "file:../"
   }
 }
