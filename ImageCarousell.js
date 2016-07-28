@@ -43,7 +43,6 @@ export default class ImageCarousell extends Component {
     this._previewOffset = 0;
     this.state = {
       showPreview: true,
-      previewTop: 80,
     };
   }
 
@@ -51,7 +50,6 @@ export default class ImageCarousell extends Component {
     const { initialIndex, previewImageSize } = this.props;
     this.refs.listView.scrollTo({x: initialIndex * deviceWidth, animated: false});
     this.refs.previewListView.scrollTo({x: (initialIndex - 2) * previewImageSize + this._bias, animated: false});
-    this.setState({previewTop: deviceHeight - this.props.previewImageSize})
   }
 
   handleScroll(e) {
@@ -117,29 +115,22 @@ export default class ImageCarousell extends Component {
   renderPreviewListView() {
     if (!this.state.showPreview) { return null; }
     return (
-      <ListView
-        renderScrollComponent={props => (
-          <ScrollView
-            {...props}
-            horizontal={true}
-            scrollEnabled={false}
-          />)}
+      <View
+        style={[
+          styles.previewListView,
+          this.props.previewContainerStyle,
+          { height: this.props.previewImageSize },
+        ]}>
+        <ListView
           initialListSize={10}
           onLayout={this.handlePreviewLayout}
           dataSource={this.props.dataSource}
-          style={[
-            styles.previewListView,
-            this.props.previewContainerStyle,
-            {
-              height: this.props.previewImageSize,
-              position: 'absolute',
-              top: this.state.previewTop,
-              left: 0,
-            }
-          ]}
           renderRow={this.renderImagePreview}
+          horizontal={true}
+          scrollEnabled={false}
           ref="previewListView"
         />
+      </View>
     );
   }
 
