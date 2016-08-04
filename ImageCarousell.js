@@ -14,6 +14,7 @@ export default class ImageCarousell extends Component {
   static propTypes = {
     dataSource: PropTypes.instanceOf(ListView.DataSource).isRequired,
     initialIndex: PropTypes.number,
+    showPreview: PropTypes.bool,
     previewImageSize: PropTypes.number,
     renderScrollComponent: PropTypes.func,
     style: View.propTypes.style,
@@ -27,6 +28,7 @@ export default class ImageCarousell extends Component {
 
   static defaultProps = {
     initialIndex: 0,
+    showPreview: true,
     previewImageSize: 80,
     renderScrollComponent: (props) => <ScrollView {...props} />,
     width: Dimensions.get('window').width,
@@ -43,33 +45,36 @@ export default class ImageCarousell extends Component {
     this.renderImagePreview = this.renderImagePreview.bind(this);
     this._bias = 0;
     this._previewOffset = 0;
+    this._refListView = null;
+    this._refPreviewListView = null;
     this.state = {
-      showPreview: true,
+      showPreview: props.showPreview,
     };
   }
 
   componentDidMount() {
-    const { initialIndex, previewImageSize, width } = this.props;
-    this._refListView.scrollTo({ x: initialIndex * width, animated: false });
-    this._refPreviewListView.scrollTo({
-      x: ((initialIndex - 2) * previewImageSize) + this._bias,
-      animated: false,
-    });
+    this.refresh();
   }
 
   componentWillReceiveProps() {
+    this.refresh();
+  }
+
+  refresh() {
     const { initialIndex, previewImageSize, width } = this.props;
     this._refListView.scrollTo({ x: initialIndex * width, animated: false });
-    this._refPreviewListView.scrollTo({
-      x: ((initialIndex - 2) * previewImageSize) + this._bias,
-      animated: false,
-    });
+    if (this._refPreviewListView != null) {
+      this._refPreviewListView.scrollTo({
+        x: ((initialIndex - 2) * previewImageSize) + this._bias,
+        animated: false,
+      });
+    }
   }
 
   handleScroll(e) {
     const event = e.nativeEvent;
 
-    if (Platform.OS === 'ios') {
+    if (this.props.showPreview === true && Platform.OS === 'ios') {
       // [0] Show preview only if zoom is disabled
       const newShowPreview = event.zoomScale <= 1;
       if (this.state.showPreview !== newShowPreview) {
