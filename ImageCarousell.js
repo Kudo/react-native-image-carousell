@@ -50,14 +50,20 @@ export default class ImageCarousell extends Component {
 
   componentDidMount() {
     const { initialIndex, previewImageSize, width } = this.props;
-    this.refs.listView.scrollTo({x: initialIndex * width, animated: false});
-    this.refs.previewListView.scrollTo({x: (initialIndex - 2) * previewImageSize + this._bias, animated: false});
+    this._refListView.scrollTo({ x: initialIndex * width, animated: false });
+    this._refPreviewListView.scrollTo({
+      x: ((initialIndex - 2) * previewImageSize) + this._bias,
+      animated: false,
+    });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps() {
     const { initialIndex, previewImageSize, width } = this.props;
-    this.refs.listView.scrollTo({x: initialIndex * width, animated: false});
-    this.refs.previewListView.scrollTo({x: (initialIndex - 2) * previewImageSize + this._bias, animated: false});
+    this._refListView.scrollTo({ x: initialIndex * width, animated: false });
+    this._refPreviewListView.scrollTo({
+      x: ((initialIndex - 2) * previewImageSize) + this._bias,
+      animated: false,
+    });
   }
 
   handleScroll(e) {
@@ -76,16 +82,16 @@ export default class ImageCarousell extends Component {
 
     // [1] If preview is displayed, adjust position to current image index
     const layoutWidth = event.layoutMeasurement.width;
-    const currentIndex = Math.floor((event.contentOffset.x + 0.5 * layoutWidth) / layoutWidth);
-    const newPreviewOffset = (currentIndex - 2) * this.props.previewImageSize + this._bias;
+    const currentIndex = Math.floor((event.contentOffset.x + (0.5 * layoutWidth)) / layoutWidth);
+    const newPreviewOffset = ((currentIndex - 2) * this.props.previewImageSize) + this._bias;
     if (this._previewOffset !== newPreviewOffset) {
-      this.refs.previewListView.scrollTo({x: newPreviewOffset});
+      this._refPreviewListView.scrollTo({ x: newPreviewOffset });
       this._previewOffset = newPreviewOffset;
     }
   }
 
   handlePreviewLayout(e) {
-    this._bias = e.nativeEvent.layout.width % this.props.previewImageSize / 2;
+    this._bias = (e.nativeEvent.layout.width % this.props.previewImageSize) / 2;
   }
 
   renderImageView(row) {
@@ -105,7 +111,7 @@ export default class ImageCarousell extends Component {
       <Image
         style={[
           imageStyle,
-          { width, height: imageHeight }
+          { width, height: imageHeight },
         ]}
         source={getImageSourceFromDataSource(row)}
         resizeMode="contain"
@@ -144,7 +150,7 @@ export default class ImageCarousell extends Component {
           renderRow={this.renderImagePreview}
           horizontal={true}
           scrollEnabled={false}
-          ref="previewListView"
+          ref={comp => { this._refPreviewListView = comp; return; }}
         />
       </View>
     );
@@ -173,7 +179,7 @@ export default class ImageCarousell extends Component {
           dataSource={this.props.dataSource}
           style={styles.listView}
           renderRow={this.renderImageView}
-          ref="listView"
+          ref={comp => { this._refListView = comp; return; }}
         />
         {this.renderPreviewListView()}
       </View>

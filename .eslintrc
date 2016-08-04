@@ -1,0 +1,20 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "ecmaFeatures": {
+      "classes": true,
+      "jsx": true
+  },
+  "rules": {
+     "eqeqeq": [2, "allow-null"],
+     "react/jsx-boolean-value": [2, "always"],
+     "react/jsx-closing-bracket-location": [2, {selfClosing: "tag-aligned", nonEmpty: "after-props"}],
+     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+     "react/require-extension": [0],
+     "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+     "no-use-before-define": 0,
+  },
+  "globals": {
+      "__DEV__": true,
+  }
+}

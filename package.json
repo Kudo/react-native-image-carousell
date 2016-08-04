@@ -3,6 +3,9 @@
   "version": "0.1.2",
   "description": "A component for image gallery carousell like iOS Photos app",
   "main": "ImageCarousell.js",
+  "scripts": {
+    "lint": "eslint *.js Example/index.ios.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kudo/react-native-image-carousell.git"
@@ -19,5 +22,17 @@
   "bugs": {
     "url": "https://github.com/Kudo/react-native-image-carousell/issues"
   },
-  "homepage": "https://github.com/Kudo/react-native-image-carousell"
+  "peerDependencies": {
+    "react-native": ">=0.27.0",
+    "react": "^15.x"
+  },
+  "homepage": "https://github.com/Kudo/react-native-image-carousell",
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-import": "^1.12.0",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-react": "^6.0.0"
+  }
 }

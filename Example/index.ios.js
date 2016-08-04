@@ -1,8 +1,8 @@
+/* eslint-disable global-require */
 import React, { Component } from 'react';
 import {
   AppRegistry,
   View,
-  Text,
   ListView,
   StyleSheet,
 } from 'react-native';
