@@ -81,12 +81,14 @@ export default class ImageCarousell extends Component {
     }
 
     // [1] If preview is displayed, adjust position to current image index
-    const layoutWidth = event.layoutMeasurement.width;
-    const currentIndex = Math.floor((event.contentOffset.x + (0.5 * layoutWidth)) / layoutWidth);
-    const newPreviewOffset = ((currentIndex - 2) * this.props.previewImageSize) + this._bias;
-    if (this._previewOffset !== newPreviewOffset) {
-      this._refPreviewListView.scrollTo({ x: newPreviewOffset });
-      this._previewOffset = newPreviewOffset;
+    if (this._refPreviewListView != null) {
+      const layoutWidth = event.layoutMeasurement.width;
+      const currentIndex = Math.floor((event.contentOffset.x + (0.5 * layoutWidth)) / layoutWidth);
+      const newPreviewOffset = ((currentIndex - 2) * this.props.previewImageSize) + this._bias;
+      if (this._previewOffset !== newPreviewOffset) {
+        this._refPreviewListView.scrollTo({ x: newPreviewOffset });
+        this._previewOffset = newPreviewOffset;
+      }
     }
   }
 
