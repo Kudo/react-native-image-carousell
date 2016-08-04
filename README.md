@@ -52,6 +52,22 @@ class Example extends React.Component {
 }
 ```
 
+## Properties
+| Prop | Type | Description | Required |
+|------|------|-------------|----------|
+|**`dataSource`**|`ListView.DataSource`|The image data source|true|
+|**`initialIndex`**|`number`|The initial image to show based on dataSource index (Default 0)||
+|**`showPreview`**|`bool`|To show bottom image preview (Default true)||
+|**`previewImageSize`**|`number`|Preview image size (Default 80)||
+|**`width`**|`number`|Width for ImageCarousell (Default is `Dimensions.get('window').width`||
+|**`height`**|`number`|Height for ImageCarousell (Default is `Dimensions.get('window').height`||
+|**`style`**|`View.propTypes.style`|Custom style for ImageCarousell||
+|**`previewContainerStyle`**|`View.propTypes.style`|Custom style for bottom preview container||
+|**`imageStyle`**|`View.propTypes.style`|Custom style for Image||
+|**`previewImageStyle`**|`View.propTypes.style`|Custom style for bottom preview image||
+|**`getImageSourceFromDataSource`**|`function`|The getter for each dataSource row. (Default is `(row) => row`.You could however to use `(row) => { uri: row.get('image') }` if you use *Immutable.js*||
+|**`renderScrollComponent`**|`function`|Custom ScrollView component for ListView||
+
 ## Example
 Check [Example](https://github.com/Kudo/react-native-image-carousell/tree/master/Example)
 
